@@ -1,6 +1,6 @@
 default_language_version:
     python: python3.10
-exclude: "README.md"
+exclude: "README.md" 
 
 repos:
     - repo: https://github.com/pre-commit/pre-commit-hooks
