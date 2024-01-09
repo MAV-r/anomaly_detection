@@ -1,6 +1,7 @@
 import pandas as pd
 import torch
-from model import FraudNet
+
+from anomaly_detection.model import FraudNet
 
 
 def main():
