@@ -16,7 +16,7 @@ ml_ops:
 dataset:
     process: "short"
     train_size: 0.8
-    target_name: 'isFraud'
+    target_name: "isFraud"
 
 artifacts:
     experiment_name: example-experiment
