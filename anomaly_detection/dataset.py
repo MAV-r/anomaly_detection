@@ -8,17 +8,21 @@ from sklearn.preprocessing import StandardScaler
 
 
 def datasets_preparation(cfg: DictConfig) -> None:
-
     DVCFileSystem().get("data", "data", recursive=True)
 
     if cfg.dataset.process == "long":
-        rus = RandomUnderSampler(random_state=42)
-        sm = SMOTE(sampling_strategy=0.5, random_state=42, k_neighbors=5)
+        rus = RandomUnderSampler(random_state=cfg.dataset.random_state)
+        sm = SMOTE(
+            sampling_strategy=0.5, random_state=cfg.dataset.random_state, k_neighbors=5
+        )
 
         df = pd.read_parquet("./data/merged_dataset.parquet")
 
         X_train_pre, X_test, y_train_pre, y_test = train_test_split(
-            df.drop("isFraud", axis=1), df["isFraud"], test_size=0.3, random_state=42
+            df.drop(cfg.dataset.target_name, axis=1),
+            df[cfg.dataset.target_name],
+            test_size=cfg.dataset.test_size,
+            random_state=cfg.dataset.random_state,
         )
 
         X_train_sampl, y_train_sampl = sm.fit_resample(X_train_pre, y_train_pre)
@@ -32,7 +36,10 @@ def datasets_preparation(cfg: DictConfig) -> None:
         X_test = scaler.transform(X_test)
 
         X_train, X_val, y_train, y_val = train_test_split(
-            X_train, y_train, test_size=0.25, random_state=42
+            X_train,
+            y_train,
+            test_size=cfg.dataset.val_size,
+            random_state=cfg.dataset.random_state,
         )
 
         X_test.to_parquet(".data/X_test.parquet")
@@ -43,5 +50,5 @@ def datasets_preparation(cfg: DictConfig) -> None:
         y_train.to_parquet(".data/y_train.parquet")
 
     elif cfg.dataset.process == "short":
-        # pass
-        print("short")
+        pass
+        # print("short")

@@ -8,7 +8,6 @@ from torch import nn
 class FraudNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.save_hyperparameters()
         self.loss_fn = nn.BCELoss()
 
         self.model = nn.Sequential(
