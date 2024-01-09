@@ -23,11 +23,11 @@ def main():
     y_val = pd.read_parquet("./data/y_val.parquet")
 
     train_dataset = TensorDataset(
-        torch.tensor(X_train, dtype=torch.float32),
+        torch.tensor(X_train.values, dtype=torch.float32),
         torch.tensor(np.array(y_train), dtype=torch.float32),
     )
     val_dataset = TensorDataset(
-        torch.tensor(X_val, dtype=torch.float32),
+        torch.tensor(X_val.values, dtype=torch.float32),
         torch.tensor(np.array(y_val), dtype=torch.float32),
     )
 
