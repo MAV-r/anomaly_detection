@@ -1,3 +1,4 @@
+import mlflow
 import numpy as np
 import pandas as pd
 import torch
@@ -48,9 +49,14 @@ def main():
 
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.params.learning_rate)
 
-    train(model, optimizer, cfg.trainer.epochs, train_loader, val_loader)
+    mlflow.set_tracking_uri(uri=cfg.ml_ops.mlflow_server)
 
-    torch.save(model.state_dict(), "./models/model")
+    with mlflow.start_run():
+        params = {"Epoch": cfg.trainer.epochs, "learning_rate": cfg.params.learning_rate}
+        mlflow.log_params(params)
+        train(model, optimizer, cfg.trainer.epochs, train_loader, val_loader)
+
+        torch.save(model.state_dict(), "./models/model")
 
 
 if __name__ == "__main__":
