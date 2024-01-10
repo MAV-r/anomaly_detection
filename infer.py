@@ -1,14 +1,16 @@
 import pandas as pd
 import torch
+from dvc.api import DVCFileSystem
 
 from anomaly_detection.model import FraudNet
 
 
 def main():
+    DVCFileSystem().get("model", "model", recursive=True)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = FraudNet().to(device)
-    model.load_state_dict(torch.load("./models/"))
+    model.load_state_dict(torch.load("./models/model"))
     model.eval()
 
     X_test = pd.read_parquet("./data/X_test.parquet")

@@ -41,7 +41,7 @@ def main():
     val_loader = DataLoader(
         val_dataset,
         batch_size=cfg.trainer.batch_size,
-        shuffle=False,
+        shuffle=True,
         num_workers=2,
         pin_memory=True,
     )
@@ -50,7 +50,7 @@ def main():
 
     train(model, optimizer, cfg.trainer.epochs, train_loader, val_loader)
 
-    torch.save(model.state_dict(), "./models/")
+    torch.save(model.state_dict(), "./models/model")
 
 
 if __name__ == "__main__":
